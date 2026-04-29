@@ -1,0 +1,1511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project Execution Plan — Readmission Predictor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── BASE & VARIABLES ─────────────────────────────────── */
+:root {
+  --bg: #FAFAFA;
+  --surface: #FFFFFF;
+  --surface-hover: #F9FAFB;
+  --surface-done: #F8FAF9;
+  
+  --border: #E5E7EB;
+  --border-focus: #D1D5DB;
+  
+  --text-main: #111827;
+  --text-secondary: #4B5563;
+  --text-tertiary: #9CA3AF;
+  
+  --primary: #4F46E5; /* Indigo */
+  --primary-bg: #EEF2FF;
+  
+  --success: #10B981; /* Emerald */
+  --success-bg: #ECFDF5;
+  --success-border: #A7F3D0;
+  
+  --warning: #F59E0B;
+  --danger: #EF4444;
+  
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--text-main);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── HEADER / MASTHEAD ────────────────────────────────── */
+.masthead {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 48px 0 32px;
+}
+.masthead-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 32px;
+}
+@media (max-width: 768px) {
+  .masthead-inner { flex-direction: column; align-items: flex-start; }
+}
+.issue-line {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 12px;
+}
+.masthead-title {
+  font-size: clamp(28px, 4vw, 36px);
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.1;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+.masthead-sub {
+  font-size: 15px;
+  color: var(--text-secondary);
+  max-width: 600px;
+}
+.masthead-stats {
+  display: flex;
+  gap: 32px;
+}
+.masthead-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.stat-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.stat-val {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text-main);
+  line-height: 1;
+}
+#done-count { color: var(--success); }
+
+/* ── PROGRESS BAR ─────────────────────────────────────── */
+.progress-container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 24px 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.pb-track {
+  flex: 1;
+  height: 6px;
+  background: var(--border);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.pb-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--success);
+  border-radius: 99px;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.pb-text {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── NAVIGATION TABS ──────────────────────────────────── */
+.phase-nav-wrapper {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(250, 250, 250, 0.8);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.phase-nav {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.phase-nav::-webkit-scrollbar { display: none; }
+.phase-tab {
+  padding: 16px 4px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.phase-tab:hover { color: var(--text-main); }
+.phase-tab.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-num {
+  font-size: 11px;
+  background: var(--border);
+  color: var(--text-secondary);
+  padding: 2px 6px;
+  border-radius: 99px;
+  font-weight: 600;
+}
+.phase-tab.active .tab-num {
+  background: var(--primary-bg);
+  color: var(--primary);
+}
+
+/* ── LAYOUT ───────────────────────────────────────────── */
+.layout {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 40px 32px 80px;
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 48px;
+}
+@media (max-width: 850px) {
+  .layout { grid-template-columns: 1fr; gap: 24px; padding: 24px; }
+  .sidebar { display: none; }
+}
+
+/* ── SIDEBAR ──────────────────────────────────────────── */
+.sidebar {
+  position: sticky;
+  top: 80px;
+  height: calc(100vh - 100px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  padding-right: 16px;
+}
+.sidebar-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 16px;
+}
+.sidebar-link {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 12px;
+  margin: 0 -12px 4px;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--text-secondary);
+  transition: all 0.2s;
+}
+.sidebar-link:hover {
+  background: var(--surface-hover);
+  color: var(--text-main);
+}
+.sl-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-tertiary);
+  margin-top: 2px;
+  min-width: 20px;
+}
+.sl-text {
+  font-size: 13px;
+  line-height: 1.4;
+  flex: 1;
+}
+.sl-check {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-focus);
+  margin-top: 2px;
+  transition: all 0.2s;
+}
+.sl-check.done {
+  background: var(--success);
+  border-color: var(--success);
+}
+
+/* ── CONTENT / PHASES ─────────────────────────────────── */
+.phase-header {
+  margin: 0 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.phase-tag {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--border);
+  padding: 4px 10px;
+  border-radius: 99px;
+}
+.phase-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-main);
+  letter-spacing: -0.01em;
+}
+.phase-duration {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  margin-left: auto;
+}
+
+/* ── TASK CARDS ───────────────────────────────────────── */
+.task {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+  transition: all 0.2s ease;
+  overflow: hidden;
+}
+.task:hover {
+  border-color: var(--border-focus);
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+}
+.task.done {
+  background: var(--surface-done);
+  border-color: var(--success-border);
+}
+
+.task-head {
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
+  gap: 16px;
+  cursor: pointer;
+  user-select: none;
+}
+.task-checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cb-box {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border-focus);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.cb-box svg {
+  width: 12px;
+  height: 12px;
+  fill: none;
+  stroke: white;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.task.done .cb-box {
+  background: var(--success);
+  border-color: var(--success);
+}
+.task.done .cb-box svg {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.task-meta { flex: 1; }
+.task-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-main);
+  margin-bottom: 6px;
+  transition: color 0.2s;
+}
+.task.done .task-title {
+  color: var(--text-secondary);
+  text-decoration: line-through;
+  text-decoration-color: var(--text-tertiary);
+}
+
+.task-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+.tag {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 99px;
+  letter-spacing: 0.02em;
+}
+.tag-py { background: var(--tag-py); color: var(--tag-py-text); }
+.tag-sql { background: #E0E7FF; color: #3730A3; }
+.tag-viz { background: var(--tag-viz); color: var(--tag-viz-text); }
+.tag-stat { background: var(--tag-stat); color: var(--tag-stat-text); }
+.tag-report { background: var(--tag-report); color: var(--tag-report-text); }
+.tag-ml { background: var(--tag-ml); color: var(--tag-ml-text); }
+
+.task-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.effort-badge {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.effort-badge::before {
+  content: '';
+  display: inline-block;
+  width: 14px; height: 14px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239CA3AF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpolyline points='12 6 12 12 16 14'/%3E%3C/svg%3E");
+  background-size: cover;
+}
+.priority-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+}
+.p-crit { background: var(--danger); box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2); }
+.p-high { background: var(--warning); box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2); }
+.p-med { background: var(--success); }
+
+/* ── EXPANDED BODY ────────────────────────────────────── */
+.task-body {
+  display: none;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  padding: 24px 20px 24px 56px;
+}
+.task-body.open {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+@media (max-width: 768px) {
+  .task-body.open { grid-template-columns: 1fr; padding-left: 20px; }
+}
+.tb-section-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.tb-steps { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.tb-steps li {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  padding-left: 20px;
+  position: relative;
+}
+.tb-steps li::before {
+  content: counter(step-count) ".";
+  counter-increment: step-count;
+  position: absolute;
+  left: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  top: 2px;
+}
+.tb-steps { counter-reset: step-count; }
+
+.code-snip {
+  background: #1F2937;
+  color: #E5E7EB;
+  border-radius: 8px;
+  padding: 16px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.6;
+  overflow-x: auto;
+  margin-top: 12px;
+}
+.c-comment { color: #6B7280; }
+.c-func { color: #60A5FA; }
+.c-str { color: #A7F3D0; }
+.c-key { color: #C084FC; }
+
+.output-note {
+  background: var(--primary-bg);
+  border-left: 3px solid var(--primary);
+  padding: 16px;
+  font-size: 14px;
+  color: #3730A3;
+  line-height: 1.5;
+  margin-top: 12px;
+  border-radius: 0 8px 8px 0;
+}
+.output-note strong { font-weight: 600; color: #312E81; }
+
+/* ── SEPARATORS ───────────────────────────────────────── */
+.phase-sep {
+  margin: 56px 0 32px;
+  border-top: 1px dashed var(--border-focus);
+}
+
+/* ── FOOTER TOTALS ────────────────────────────────────── */
+.totals-strip {
+  margin-top: 64px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 32px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+@media (max-width: 600px) { .totals-strip { grid-template-columns: 1fr 1fr; } }
+.total-num {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1;
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+.total-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <div>
+      <div class="issue-line">Senior DA Portfolio</div>
+      <div class="masthead-title">Diabetic Readmission Predictor</div>
+      <div class="masthead-sub">Step-by-step execution guide for the UCI 130-Hospital dataset analysis. 101,766 patient encounters mapped via Python and modeled for executives.</div>
+    </div>
+    <div class="masthead-stats">
+      <div class="masthead-stat">
+        <span class="stat-label">Tasks</span>
+        <span class="stat-val" id="total-count">28</span>
+      </div>
+      <div class="masthead-stat">
+        <span class="stat-label">Completed</span>
+        <span class="stat-val" id="done-count">0</span>
+      </div>
+      <div class="masthead-stat">
+        <span class="stat-label">Est. Time</span>
+        <span class="stat-val">14d</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="progress-container">
+  <div class="pb-track"><div class="pb-fill" id="pb"></div></div>
+  <span class="pb-text" id="pb-pct">0 / 28</span>
+</div>
+
+<div class="phase-nav-wrapper">
+  <div class="phase-nav">
+    <button class="phase-tab active" onclick="scrollToPhase('phase0')"><span class="tab-num">0</span> Setup</button>
+    <button class="phase-tab" onclick="scrollToPhase('phase1')"><span class="tab-num">1</span> Data Cleaning</button>
+    <button class="phase-tab" onclick="scrollToPhase('phase2')"><span class="tab-num">2</span> EDA</button>
+    <button class="phase-tab" onclick="scrollToPhase('phase3')"><span class="tab-num">3</span> Analysis</button>
+    <button class="phase-tab" onclick="scrollToPhase('phase4')"><span class="tab-num">4</span> Dashboard</button>
+    <button class="phase-tab" onclick="scrollToPhase('phase5')"><span class="tab-num">5</span> ML Model</button>
+    <button class="phase-tab" onclick="scrollToPhase('phase6')"><span class="tab-num">6</span> Report</button>
+  </div>
+</div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-title">Task Overview</div>
+    <div id="sidebar-links"></div>
+  </aside>
+
+  <main class="content" id="main-content">
+    
+    <div id="phase0">
+      <div class="phase-header">
+        <div class="phase-tag">Phase 0</div>
+        <div class="phase-title">Environment Setup</div>
+        <div class="phase-duration">Day 1 — 3-4 hrs</div>
+      </div>
+
+      <div class="task" id="task-1">
+        <div class="task-head" onclick="toggleTask('task-1')">
+          <div class="task-checkbox" onclick="event.stopPropagation();toggleDone('task-1')">
+            <div class="cb-box"><svg><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          </div>
+          <div class="task-meta">
+            <div class="task-title">Create project folder structure & virtual environment</div>
+            <div class="task-tags"><span class="tag tag-py">Python</span></div>
+          </div>
+          <div class="task-right">
+            <span class="effort-badge">30m</span>
+            <div class="priority-dot p-crit" title="Critical Priority"></div>
+          </div>
+        </div>
+        <div class="task-body" id="body-task-1">
+          <div>
+            <div class="tb-section-label">Action Steps</div>
+            <ul class="tb-steps">
+              <li>Create root folder: <code>readmission_project/</code></li>
+              <li>Inside create: <code>data/raw/</code>, <code>data/cleaned/</code>, <code>notebooks/</code>, <code>outputs/charts/</code>, <code>outputs/dashboard/</code>, <code>report/</code>, <code>models/</code></li>
+              <li>Place both CSV files in <code>data/raw/</code></li>
+              <li>Run <code>python -m venv env</code> and activate it</li>
+              <li>Install libraries: <code>pip install pandas numpy matplotlib seaborn scipy scikit-learn jupyter openpyxl</code></li>
+              <li>Create <code>requirements.txt</code> with <code>pip freeze > requirements.txt</code></li>
+              <li>Initialize a git repo: <code>git init</code> and add <code>.gitignore</code></li>
+            </ul>
+          </div>
+          <div>
+            <div class="tb-section-label">Expected Output</div>
+            <div class="output-note"><strong>Deliverable:</strong> Clean project folder on GitHub with first commit. README.md drafted with dataset description, project goal, and tool stack. No analysis yet — just structure.</div>
+            <div class="code-snip">readmission_project/<br>├── data/<br>│   ├── raw/<br>│   │   ├── diabetic_data.csv<br>│   │   └── IDS_mapping.csv<br>│   └── cleaned/<br>├── notebooks/<br>├── outputs/<br>│   ├── charts/<br>│   └── dashboard/<br>├── models/<br>├── report/<br>└── README.md</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="task" id="task-2">
+        <div class="task-head" onclick="toggleTask('task-2')">
+          <div class="task-checkbox" onclick="event.stopPropagation();toggleDone('task-2')">
+            <div class="cb-box"><svg><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          </div>
+          <div class="task-meta">
+            <div class="task-title">Initial data load, shape check & column inventory</div>
+            <div class="task-tags"><span class="tag tag-py">Python</span></div>
+          </div>
+          <div class="task-right">
+            <span class="effort-badge">45m</span>
+            <div class="priority-dot p-crit"></div>
+          </div>
+        </div>
+        <div class="task-body" id="body-task-2">
+          <div>
+            <div class="tb-section-label">Action Steps</div>
+            <ul class="tb-steps">
+              <li>Open a Jupyter notebook: <code>01_data_exploration.ipynb</code></li>
+              <li>Load both CSVs with pandas, print <code>df.shape</code> — expect (101766, 50)</li>
+              <li>Print <code>df.head()</code>, <code>df.dtypes</code>, <code>df.info()</code></li>
+              <li>Count how many <code>?</code> values are in each column using <code>df.isin(['?']).sum()</code></li>
+              <li>Document findings in a markdown cell — which columns have most missing</li>
+              <li>Check target variable distribution: <code>df['readmitted'].value_counts(normalize=True)</code></li>
+              <li>Print IDS_mapping.csv structure — understand how the 3 ID columns map</li>
+            </ul>
+          </div>
+          <div>
+            <div class="tb-section-label">Expected Output</div>
+            <div class="output-note"><strong>Deliverable:</strong> A filled-out data dictionary table in markdown (column name, dtype, % missing, unique values, notes). This becomes Section 2 of your report.</div>
+            <div class="code-snip"><span class="c-comment"># Key checks</span><br>print(df.shape) <span class="c-comment"># (101766, 50)</span><br>missing = (df == <span class="c-str">'?'</span>).sum().sort_values(ascending=False)<br>print(missing[missing > 0])<br><span class="c-comment"># weight: ~98349, payer_code: ~40256</span><br><span class="c-comment"># medical_specialty: ~49949</span></div>
+          </div>
+        </div>
+      </div>
+    </div><div id="phase1">
+      <div class="phase-sep"></div>
+      <div class="phase-header">
+        <div class="phase-tag">Phase 1</div>
+        <div class="phase-title">Data Cleaning & Features</div>
+        <div class="phase-duration">Days 2–4 — ~10 hrs</div>
+      </div>
+
+      <div class="task" id="task-3">
+        <div class="task-head" onclick="toggleTask('task-3')">
+          <div class="task-checkbox" onclick="event.stopPropagation();toggleDone('task-3')">
+            <div class="cb-box"><svg><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          </div>
+          <div class="task-meta">
+            <div class="task-title">Replace all "?" with NaN & drop high-null columns</div>
+            <div class="task-tags"><span class="tag tag-py">Python</span></div>
+          </div>
+          <div class="task-right">
+            <span class="effort-badge">1h</span>
+            <div class="priority-dot p-crit"></div>
+          </div>
+        </div>
+        <div class="task-body" id="body-task-3">
+          <div>
+            <div class="tb-section-label">Action Steps</div>
+            <ul class="tb-steps">
+              <li>Replace all <code>'?'</code> with <code>np.nan</code> using <code>df.replace('?', np.nan, inplace=True)</code></li>
+              <li>Drop <code>weight</code> column — 97% null, not recoverable</li>
+              <li>Drop <code>payer_code</code> — ~40% null, not critical for clinical analysis</li>
+              <li>For <code>medical_specialty</code> (49% null): fill with string <code>'Unknown/Other'</code></li>
+              <li>For <code>race</code> (~2% null): fill with <code>'Unknown'</code></li>
+              <li>For <code>diag_2</code>, <code>diag_3</code>: fill nulls with <code>'Unknown'</code></li>
+              <li>Print null counts before and after to confirm — save as markdown table</li>
+              <li>Save intermediate: <code>df.to_csv('data/cleaned/step1_nulls_handled.csv', index=False)</code></li>
+            </ul>
+          </div>
+          <div>
+            <div class="tb-section-label">Code Pattern</div>
+            <div class="code-snip"><span class="c-key">import</span> pandas <span class="c-key">as</span> pd<br><span class="c-key">import</span> numpy <span class="c-key">as</span> np<br><br>df = pd.<span class="c-func">read_csv</span>(<span class="c-str">'data/raw/diabetic_data.csv'</span>)<br>df.<span class="c-func">replace</span>(<span class="c-str">'?'</span>, np.nan, inplace=True)<br><br>df.<span class="c-func">drop</span>(columns=[<span class="c-str">'weight'</span>,<span class="c-str">'payer_code'</span>], inplace=True)<br>df[<span class="c-str">'medical_specialty'</span>].<span class="c-func">fillna</span>(<span class="c-str">'Unknown/Other'</span>, inplace=True)<br>df[<span class="c-str">'race'</span>].<span class="c-func">fillna</span>(<span class="c-str">'Unknown'</span>, inplace=True)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="task" id="task-4">
+        <div class="task-head" onclick="toggleTask('task-4')">
+          <div class="task-checkbox" onclick="event.stopPropagation();toggleDone('task-4')">
+            <div class="cb-box"><svg><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          </div>
+          <div class="task-meta">
+            <div class="task-title">Remove duplicate patients — keep only first encounter</div>
+            <div class="task-tags"><span class="tag tag-py">Python</span></div>
+          </div>
+          <div class="task-right">
+            <span class="effort-badge">45m</span>
+            <div class="priority-dot p-crit"></div>
+          </div>
+        </div>
+        <div class="task-body" id="body-task-4">
+          <div>
+            <div class="tb-section-label">Action Steps</div>
+            <ul class="tb-steps">
+              <li>Check how many unique patients: <code>df['patient_nbr'].nunique()</code> — expect ~71K vs 101K rows</li>
+              <li>Sort by <code>encounter_id</code> ascending (lowest = earliest encounter)</li>
+              <li>Drop duplicates on <code>patient_nbr</code>, keeping <code>first</code></li>
+              <li>Record rows removed: print before and after shape</li>
+              <li>Document reasoning in notebook markdown: why first encounter avoids outcome leakage</li>
+            </ul>
+          </div>
+          <div>
+            <div class="tb-section-label">Why This Matters</div>
+            <div class="output-note"><strong>Statistical reason:</strong> Multiple encounters per patient make them non-independent observations. Including all encounters inflates sample size falsely and biases any model trained on this data. The first encounter represents the cleanest signal.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="task" id="task-5">
+        <div class="task-head" onclick="toggleTask('task-5')">
+          <div class="task-checkbox" onclick="event.stopPropagation();toggleDone('task-5')">
+            <div class="cb-box"><svg><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          </div>
+          <div class="task-meta">
+            <div class="task-title">Remove deceased & hospice patients from dataset</div>
+            <div class="task-tags"><span class="tag tag-py">Python</span></div>
+          </div>
+          <div class="task-right">
+            <span class="effort-badge">30m</span>
+            <div class="priority-dot p-crit"></div>
+          </div>
+        </div>
+        <div class="task-body" id="body-task-5">
+          <div>
+            <div class="tb-section-label">Action Steps</div>
+            <ul class="tb-steps">
+              <li>Open IDS_mapping.csv — identify discharge_disposition_id codes for Expired (11), Hospice (13, 14), Expired Medicaid (19, 20, 21)</li>
+              <li>Filter: <code>df = df[~df['discharge_disposition_id'].isin([11,13,14,19,20,21])]</code></li>
+              <li>Convert column to int first if it read as float</li>
+              <li>Record how many rows removed (~1,600 expected)</li>
+              <li>Add markdown note: deceased patients have zero probability of readmission — including them biases the NO class downward.</li>
+            </ul>
+          </div>
+          <div>
+            <div class="tb-section-label">Expected Output</div>
+            <div class="output-note"><strong>Dataset state after Task 05:</strong> ~69,000–71,000 rows, 48 columns, no deceased patients, no duplicate patients, no "?" values. Ready for mapping.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="task" id="task-6">
+        <div class="task-head" onclick="toggleTask('task-6')">
+          <div class="task-checkbox" onclick="event.stopPropagation();toggleDone('task-6')">
+            <div class="cb-box"><svg><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          </div>
+          <div class="task-meta">
+            <div class="task-title">Map ID columns to labels using IDS_mapping.csv</div>
+            <div class="task-tags"><span class="tag tag-py">Python</span></div>
+          </div>
+          <div class="task-right">
+            <span class="effort-badge">1.5h</span>
+            <div class="priority-dot p-high"></div>
+          </div>
+        </div>
+        <div class="task-body" id="body-task-6">
+          <div>
+            <div class="tb-section-label">Action Steps</div>
+            <ul class="tb-steps">
+              <li>Parse IDS_mapping.csv carefully — it has 3 separate tables in one file.</li>
+              <li>Create 3 separate dictionary objects from the data.</li>
+              <li>Map: <code>df['admission_type_label'] = df['admission_type_id'].map(admission_type_dict)</code></li>
+              <li>Repeat for <code>discharge_disposition_label</code> and <code>admission_source_label</code></li>
+              <li>Keep original ID columns — you'll need them for modeling</li>
+            </ul>
+          </div>
+          <div>
+            <div class="tb-section-label">Code Pattern</div>
+            <div class="code-snip">admission_type_dict = {<br>  1:<span class="c-str">'Emergency'</span>, 2:<span class="c-str">'Urgent'</span>,<br>  3:<span class="c-str">'Elective'</span>, 4:<span class="c-str">'Newborn'</span>,<br>  5:<span class="c-str">'Not Available'</span>, 7:<span class="c-str">'Trauma Center'</span><br>}<br>df[<span class="c-str">'admission_type_label'</span>] = df[<span class="c-str">'admission_type_id'</span>].<span class="c-func">map</span>(admission_type_dict)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="task" id="task-7">
+        <div class="task-head" onclick="toggleTask('task-7')">
+          <div class="task-checkbox" onclick="event.stopPropagation();toggleDone('task-7')">
+            <div class="cb-box"><svg><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          </div>
+          <div class="task-meta">
+            <div class="task-title">Create target variable & aggregate features</div>
+            <div class="task-tags"><span class="tag tag-py">Python</span></div>
+          </div>
+          <div class="task-right">
+            <span class="effort-badge">1h</span>
+            <div class="priority-dot p-crit"></div>
+          </div>
+        </div>
+        <div class="task-body" id="body-task-7">
+          <div>
+            <div class="tb-section-label">Action Steps</div>
+            <ul class="tb-steps">
+              <li>Create binary target: <code>df['readmitted_30'] = (df['readmitted'] == '&lt;30').astype(int)</code></li>
+              <li>Map age brackets to midpoint numerics: [0-10)→5, [10-20)→15, etc.</li>
+              <li>Create <code>total_prior_visits = number_outpatient + number_emergency + number_inpatient</code></li>
+              <li>Create <code>num_med_changed</code>: count of medication columns where value is 'Up' or 'Down'</li>
+              <li>Create <code>tested_A1C</code> and <code>A1C_poor_control</code> binaries.</li>
+            </ul>
+          </div>
+          <div>
+            <div class="tb-section-label">Expected Output</div>
+            <div class="output-note"><strong>New columns added:</strong> readmitted_30, age_numeric, total_prior_visits, num_med_changed, tested_A1C, A1C_poor_control. These become primary model features.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="task" id="task-8">
+        <div class="task-head" onclick="toggleTask('task-8')">
+          <div class="task-checkbox" onclick="event.stopPropagation();toggleDone('task-8')">
+            <div class="cb-box"><svg><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          </div>
+          <div class="task-meta">
+            <div class="task-title">Classify primary diagnosis (diag_1) into ICD-9 groups</div>
+            <div class="task-tags"><span class="tag tag-py">Python</span></div>
+          </div>
+          <div class="task-right">
+            <span class="effort-badge">2h</span>
+            <div class="priority-dot p-high"></div>
+          </div>
+        </div>
+        <div class="task-body" id="body-task-8">
+          <div>
+            <div class="tb-section-label">Action Steps</div>
+            <ul class="tb-steps">
+              <li>Print unique diag_1 values — these are ICD-9 codes.</li>
+              <li>Convert diag_1 to float where possible (handle E/V codes).</li>
+              <li>Write classification function using ICD-9 ranges (e.g., 390–459 = Circulatory).</li>
+              <li>Apply function: <code>df['diag_category'] = df['diag_1'].apply(classify_icd9)</code></li>
+              <li>Do the same for diag_2 and diag_3 if time permits.</li>
+            </ul>
+          </div>
+          <div>
+            <div class="tb-section-label">Code Pattern</div>
+            <div class="code-snip"><span class="c-key">def</span> <span class="c-func">classify_icd9</span>(code):<br>  <span class="c-key">try</span>: code = float(code)<br>  <span class="c-key">except</span>: <span class="c-key">return</span> <span class="c-str">'Other'</span><br>  <span class="c-key">if</span> 250 &lt;= code &lt; 251: <span class="c-key">return</span> <span class="c-str">'Diabetes'</span><br>  <span class="c-key">elif</span> 390 &lt;= code &lt;= 459: <span class="c-key">return</span> <span class="c-str">'Circulatory'</span><br>  <span class="c-key">return</span> <span class="c-str">'Other'</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="task" id="task-9">
+        <div class="task-head" onclick="toggleTask('task-9')">
+          <div class="task-checkbox" onclick="event.stopPropagation();toggleDone('task-9')">
+            <div class="cb-box"><svg><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          </div>
+          <div class="task-meta">
+            <div class="task-title">Final data quality check & save clean dataset</div>
+            <div class="task-tags"><span class="tag tag-py">Python</span></div>
+          </div>
+          <div class="task-right">
+            <span class="effort-badge">1h</span>
+            <div class="priority-dot p-high"></div>
+          </div>
+        </div>
+        <div class="task-body" id="body-task-9">
+          <div>
+            <div class="tb-section-label">Action Steps</div>
+            <ul class="tb-steps">
+              <li>Run <code>df.isnull().sum()</code> — confirm only acceptable nulls remain.</li>
+              <li>Run <code>df.duplicated().sum()</code> — must be 0.</li>
+              <li>Confirm <code>readmitted_30</code> class balance — print ratio.</li>
+              <li>Cap outliers for num_lab_procedures, time_in_hospital (99th percentile).</li>
+              <li>Save cleaned file: <code>df.to_csv('data/cleaned/diabetic_cleaned.csv', index=False)</code></li>
+              <li>Write a <code>cleaning_log.md</code> documenting every change.</li>
+            </ul>
+          </div>
+          <div>
+            <div class="tb-section-label">Expected Output</div>
+            <div class="output-note"><strong>Final clean dataset:</strong> ~69–71K rows, ~52 columns. Zero unexplained nulls. Saved and ready for EDA.</div>
+          </div>
+        </div>
+      </div>
+    </div><div id="phase2">
+      <div class="phase-sep"></div>
+      <div class="phase-header">
+        <div class="phase-tag">Phase 2</div>
+        <div class="phase-title">Exploratory Data Analysis</div>
+        <div class="phase-duration">Days 4–6 — ~8 hrs</div>
+      </div>
+
+      <div class="task" id="task-10">
+        <div class="task-head" onclick="toggleTask('task-10')">
+          <div class="task-checkbox" onclick="event.stopPropagation();toggleDone('task-10')">
+            <div class="cb-box"><svg><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          </div>
+          <div class="task-meta">
+            <div class="task-title">Univariate analysis — distributions of key numeric columns</div>
+            <div class="task-tags"><span class="tag tag-py">Python</span><span class="tag tag-viz">Seaborn</span></div>
+          </div>
+          <div class="task-right">
+            <span class="effort-badge">2h</span>
+            <div class="priority-dot p-high"></div>
+          </div>
+        </div>
+        <div class="task-body" id="body-task-10">
+          <div>
+            <div class="tb-section-label">Action Steps</div>
+            <ul class="tb-steps">
+              <li>Open new notebook: <code>02_eda.ipynb</code></li>
+              <li>Plot histogram + KDE for: time_in_hospital, num_medications, etc.</li>
+              <li>For categorical: bar charts of readmitted, gender, race, diag_category.</li>
+              <li>Print <code>.describe()</code> for all numeric columns.</li>
+              <li>Save all plots to <code>outputs/charts/eda/</code> as PNG files at 150 dpi.</li>
+            </ul>
+          </div>
+          <div>
+            <div class="tb-section-label">Expected Output</div>
+            <div class="output-note"><strong>Deliverable:</strong> 8–10 saved chart PNGs. Markdown observations in notebook. Feeds into report Section 3.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="task" id="task-11">
+        <div class="task-head" onclick="toggleTask('task-11')">
+          <div class="task-checkbox" onclick="event.stopPropagation();toggleDone('task-11')">
+            <div class="cb-box"><svg><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          </div>
+          <div class="task-meta">
+            <div class="task-title">Bivariate analysis — readmission rates by variables</div>
+            <div class="task-tags"><span class="tag tag-py">Python</span><span class="tag tag-stat">Statistics</span></div>
+          </div>
+          <div class="task-right">
+            <span class="effort-badge">3h</span>
+            <div class="priority-dot p-crit"></div>
+          </div>
+        </div>
+        <div class="task-body" id="body-task-11">
+          <div>
+            <div class="tb-section-label">Action Steps</div>
+            <ul class="tb-steps">
+              <li>Compute readmission rate by categorical groups.</li>
+              <li>Plot grouped bar charts vs readmission benchmark (11.2%).</li>
+              <li>Run Chi-Square test for categorical vs readmitted_30.</li>
+              <li>Run Mann-Whitney U for numeric vs readmitted_30.</li>
+              <li>Create a summary table of p-values and significant directions.</li>
+            </ul>
+          </div>
+          <div>
+            <div class="tb-section-label">Code Pattern</div>
+            <div class="code-snip"><span class="c-key">from</span> scipy.stats <span class="c-key">import</span> chi2_contingency<br><br>ct = pd.<span class="c-func">crosstab</span>(df[<span class="c-str">'race'</span>], df[<span class="c-str">'readmitted_30'</span>])<br>chi2, p, dof, exp = <span class="c-func">chi2_contingency</span>(ct)<br>print(<span class="c-str">f"p={p:.4f}"</span>)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="task" id="task-12">
+        <div class="task-head" onclick="toggleTask('task-12')">
+          <div class="task-checkbox" onclick="event.stopPropagation();toggleDone('task-12')">
+            <div class="cb-box"><svg><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          </div>
+          <div class="task-meta">
+            <div class="task-title">Correlation heatmap of features vs target</div>
+            <div class="task-tags"><span class="tag tag-py">Python</span><span class="tag tag-viz">Seaborn</span></div>
+          </div>
+          <div class="task-right">
+            <span class="effort-badge">1.5h</span>
+            <div class="priority-dot p-high"></div>
+          </div>
+        </div>
+        <div class="task-body" id="body-task-12">
+          <div>
+            <div class="tb-section-label">Action Steps</div>
+            <ul class="tb-steps">
+              <li>Select only numeric + engineered features + target.</li>
+              <li>Compute point-biserial correlation.</li>
+              <li>Plot heatmap with diverging colormap.</li>
+              <li>Rank top 15 features by absolute correlation.</li>
+              <li>Save heatmap as <code>correlation_heatmap.png</code></li>
+            </ul>
+          </div>
+          <div>
+            <div class="tb-section-label">Expected Output</div>
+            <div class="output-note"><strong>Expected top predictors:</strong> total_prior_visits, number_inpatient, time_in_hospital, num_medications, age.</div>
+          </div>
+        </div>
+      </div>
+    </div><div id="phase3">
+      <div class="phase-sep"></div>
+      <div class="phase-header">
+        <div class="phase-tag">Phase 3</div>
+        <div class="phase-title">Clinical Insights Analysis</div>
+        <div class="phase-duration">Days 6–8 — ~8 hrs</div>
+      </div>
+
+      <div class="task" id="task-13">
+        <div class="task-head" onclick="toggleTask('task-13')">
+          <div class="task-checkbox" onclick="event.stopPropagation();toggleDone('task-13')">
+            <div class="cb-box"><svg><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          </div>
+          <div class="task-meta">
+            <div class="task-title">A1C testing gap analysis — does monitoring reduce readmission?</div>
+            <div class="task-tags"><span class="tag tag-py">Python</span><span class="tag tag-stat">Chi-Square</span></div>
+          </div>
+          <div class="task-right">
+            <span class="effort-badge">1.5h</span>
+            <div class="priority-dot p-crit"></div>
+          </div>
+        </div>
+        <div class="task-body" id="body-task-13">
+          <div>
+            <div class="tb-section-label">Action Steps</div>
+            <ul class="tb-steps">
+              <li>Group by A1Cresult and compute readmit rate.</li>
+              <li>Plot stacked bar chart of readmission categories.</li>
+              <li>Run Chi-Square test between A1C groups and target.</li>
+              <li>Calculate impact of untested population (~83%).</li>
+              <li>Frame this as Recommendation #1 in report.</li>
+            </ul>
+          </div>
+          <div>
+            <div class="tb-section-label">Expected Output</div>
+            <div class="output-note"><strong>Key finding:</strong> A1C >8 (poor control) has highest readmission. "Normal" has lowest. Justifies mandating tests.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="task" id="task-14">
+        <div class="task-head" onclick="toggleTask('task-14')">
+          <div class="task-checkbox" onclick="event.stopPropagation();toggleDone('task-14')">
+            <div class="cb-box"><svg><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          </div>
+          <div class="task-meta">
+            <div class="task-title">Prior hospital visits risk segmentation & heatmap</div>
+            <div class="task-tags"><span class="tag tag-py">Python</span><span class="tag tag-viz">Seaborn</span></div>
+          </div>
+          <div class="task-right">
+            <span class="effort-badge">2h</span>
+            <div class="priority-dot p-high"></div>
+          </div>
+        </div>
+        <div class="task-body" id="body-task-14">
+          <div>
+            <div class="tb-section-label">Action Steps</div>
+            <ul class="tb-steps">
+              <li>Create buckets: inpatient (0,1,2,3+) and emergency (0,1,2,3+).</li>
+              <li>Create pivot table of mean readmission rates.</li>
+              <li>Plot heatmap using seaborn, annotate cell values.</li>
+              <li>Compute readmit multiplier for frequent fliers.</li>
+            </ul>
+          </div>
+          <div>
+            <div class="tb-section-label">Expected Output</div>
+            <div class="output-note"><strong>Key finding:</strong> Top-right cell (3+ visits) expected to show ~5-7× risk multiplier. Becomes Rec #2.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="task" id="task-15">
+        <div class="task-head" onclick="toggleTask('task-15')">
+          <div class="task-checkbox" onclick="event.stopPropagation();toggleDone('task-15')">
+            <div class="cb-box"><svg><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          </div>
+          <div class="task-meta">
+            <div class="task-title">Discharge disposition analysis</div>
+            <div class="task-tags"><span class="tag tag-py">Python</span><span class="tag tag-viz">Matplotlib</span></div>
+          </div>
+          <div class="task-right">
+            <span class="effort-badge">1.5h</span>
+            <div class="priority-dot p-high"></div>
+          </div>
+        </div>
+        <div class="task-body" id="body-task-15">
+          <div>
+            <div class="tb-section-label">Action Steps</div>
+            <ul class="tb-steps">
+              <li>Group by discharge_disposition_label.</li>
+              <li>Filter to groups >100 patients. Sort desc.</li>
+              <li>Plot horizontal bar chart.</li>
+              <li>Compare "Home" vs "Home with health service".</li>
+            </ul>
+          </div>
+          <div>
+            <div class="tb-section-label">Expected Output</div>
+            <div class="output-note"><strong>Expected finding:</strong> Home health care lowers readmission vs purely independent discharge.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="task" id="task-16">
+        <div class="task-head" onclick="toggleTask('task-16')">
+          <div class="task-checkbox" onclick="event.stopPropagation();toggleDone('task-16')">
+            <div class="cb-box"><svg><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          </div>
+          <div class="task-meta">
+            <div class="task-title">Build patient risk segmentation tiers</div>
+            <div class="task-tags"><span class="tag tag-py">Python</span></div>
+          </div>
+          <div class="task-right">
+            <span class="effort-badge">2h</span>
+            <div class="priority-dot p-crit"></div>
+          </div>
+        </div>
+        <div class="task-body" id="body-task-16">
+          <div>
+            <div class="tb-section-label">Action Steps</div>
+            <ul class="tb-steps">
+              <li>Define risk score point system based on top predictors.</li>
+              <li>Create risk_score column (sum points).</li>
+              <li>Assign Low/Med/High tiers based on score thresholds.</li>
+              <li>Validate actual readmit rates per tier.</li>
+              <li>Save: <code>df.to_csv('data/cleaned/diabetic_scored.csv', index=False)</code></li>
+            </ul>
+          </div>
+          <div>
+            <div class="tb-section-label">Expected Output</div>
+            <div class="output-note"><strong>Target segmentation:</strong> Clear separation in readmission rates between Low, Medium, and High cohorts.</div>
+          </div>
+        </div>
+      </div>
+    </div><div id="phase4">
+      <div class="phase-sep"></div>
+      <div class="phase-header">
+        <div class="phase-tag">Phase 4</div>
+        <div class="phase-title">Dashboard Build</div>
+        <div class="phase-duration">Days 8–11 — ~10 hrs</div>
+      </div>
+
+      <div class="task" id="task-17">
+        <div class="task-head" onclick="toggleTask('task-17')">
+          <div class="task-checkbox" onclick="event.stopPropagation();toggleDone('task-17')">
+            <div class="cb-box"><svg><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          </div>
+          <div class="task-meta">
+            <div class="task-title">Data prep for Tableau/Power BI</div>
+            <div class="task-tags"><span class="tag tag-viz">Tableau / Power BI</span></div>
+          </div>
+          <div class="task-right">
+            <span class="effort-badge">45m</span>
+            <div class="priority-dot p-high"></div>
+          </div>
+        </div>
+        <div class="task-body" id="body-task-17">
+          <div>
+            <div class="tb-section-label">Action Steps</div>
+            <ul class="tb-steps">
+              <li>Export <code>diabetic_scored.csv</code> with clean, readable labels.</li>
+              <li>Create aggregation tables if necessary.</li>
+              <li>Connect to BI tool, verify data types.</li>
+            </ul>
+          </div>
+          <div>
+            <div class="tb-section-label">Note</div>
+            <div class="output-note">Ensure structural naming conventions align with executive reporting standards.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="task" id="task-18">
+        <div class="task-head" onclick="toggleTask('task-18')">
+          <div class="task-checkbox" onclick="event.stopPropagation();toggleDone('task-18')">
+            <div class="cb-box"><svg><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          </div>
+          <div class="task-meta">
+            <div class="task-title">Build Page 1 — Overview KPIs & Distributions</div>
+            <div class="task-tags"><span class="tag tag-viz">Tableau / Power BI</span></div>
+          </div>
+          <div class="task-right">
+            <span class="effort-badge">2.5h</span>
+            <div class="priority-dot p-crit"></div>
+          </div>
+        </div>
+        <div class="task-body" id="body-task-18">
+          <div>
+            <div class="tb-section-label">Action Steps</div>
+            <ul class="tb-steps">
+              <li>Create 6 top KPI cards (rate, avg hospital time, testing rate, etc).</li>
+              <li>Add Donut chart of readmit breakdown.</li>
+              <li>Add Age group bar chart with benchmark lines.</li>
+              <li>Apply global filters.</li>
+            </ul>
+          </div>
+          <div>
+            <div class="tb-section-label">Expected Output</div>
+            <div class="output-note">An executive summary layout designed for 30-second comprehension.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="task" id="task-19">
+        <div class="task-head" onclick="toggleTask('task-19')">
+          <div class="task-checkbox" onclick="event.stopPropagation();toggleDone('task-19')">
+            <div class="cb-box"><svg><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          </div>
+          <div class="task-meta">
+            <div class="task-title">Build Page 2 & 3 — Clinical & Operational Details</div>
+            <div class="task-tags"><span class="tag tag-viz">Tableau / Power BI</span></div>
+          </div>
+          <div class="task-right">
+            <span class="effort-badge">5h</span>
+            <div class="priority-dot p-high"></div>
+          </div>
+        </div>
+        <div class="task-body" id="body-task-19">
+          <div>
+            <div class="tb-section-label">Action Steps</div>
+            <ul class="tb-steps">
+              <li>Build Boxplots for hospital stay vs readmission.</li>
+              <li>Build A1C stacked bar chart.</li>
+              <li>Build Specialty bar chart and Heatmap of prior visits.</li>
+              <li>Add annotation callouts summarizing "So what?" for leadership.</li>
+            </ul>
+          </div>
+          <div>
+            <div class="tb-section-label">Expected Output</div>
+            <div class="output-note">Clinician and Operations facing views with explicit directional recommendations attached to data visuals.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="task" id="task-20">
+        <div class="task-head" onclick="toggleTask('task-20')">
+          <div class="task-checkbox" onclick="event.stopPropagation();toggleDone('task-20')">
+            <div class="cb-box"><svg><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          </div>
+          <div class="task-meta">
+            <div class="task-title">Build Page 4 — Interactive Patient Risk Table</div>
+            <div class="task-tags"><span class="tag tag-viz">Tableau / Power BI</span></div>
+          </div>
+          <div class="task-right">
+            <span class="effort-badge">2h</span>
+            <div class="priority-dot p-high"></div>
+          </div>
+        </div>
+        <div class="task-body" id="body-task-20">
+          <div>
+            <div class="tb-section-label">Action Steps</div>
+            <ul class="tb-steps">
+              <li>Build risk tier volume funnel.</li>
+              <li>Create dynamic tabular view of patient lists by risk tier.</li>
+              <li>Configure Excel export functions for daily care-coordinator use.</li>
+            </ul>
+          </div>
+          <div>
+            <div class="tb-section-label">Expected Output</div>
+            <div class="output-note">A functional list generation tool that turns abstract analysis into a direct intervention workflow.</div>
+          </div>
+        </div>
+      </div>
+    </div><div id="phase5">
+      <div class="phase-sep"></div>
+      <div class="phase-header">
+        <div class="phase-tag">Phase 5 (Opt)</div>
+        <div class="phase-title">Predictive Modeling</div>
+        <div class="phase-duration">Days 11–12 — ~6 hrs</div>
+      </div>
+
+      <div class="task" id="task-21">
+        <div class="task-head" onclick="toggleTask('task-21')">
+          <div class="task-checkbox" onclick="event.stopPropagation();toggleDone('task-21')">
+            <div class="cb-box"><svg><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          </div>
+          <div class="task-meta">
+            <div class="task-title">Train baseline Logistic Regression model</div>
+            <div class="task-tags"><span class="tag tag-ml">Scikit-learn</span><span class="tag tag-py">Python</span></div>
+          </div>
+          <div class="task-right">
+            <span class="effort-badge">2h</span>
+            <div class="priority-dot p-med"></div>
+          </div>
+        </div>
+        <div class="task-body" id="body-task-21">
+          <div>
+            <div class="tb-section-label">Action Steps</div>
+            <ul class="tb-steps">
+              <li>Select features, one-hot encode categoricals.</li>
+              <li>Split 80/20 train/test with <code>stratify=y</code>.</li>
+              <li>Train LogisticRegression with <code>class_weight='balanced'</code>.</li>
+              <li>Evaluate vs naive baseline (accuracy = 88.8%).</li>
+            </ul>
+          </div>
+          <div>
+            <div class="tb-section-label">Expected Output</div>
+            <div class="output-note"><strong>Target metrics:</strong> AUC-ROC: 0.65–0.72. Recall on positive class: 0.55–0.65. Imbalanced classes dictate focusing on recall.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="task" id="task-22">
+        <div class="task-head" onclick="toggleTask('task-22')">
+          <div class="task-checkbox" onclick="event.stopPropagation();toggleDone('task-22')">
+            <div class="cb-box"><svg><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          </div>
+          <div class="task-meta">
+            <div class="task-title">Extract feature importance & evaluate ROC/PR</div>
+            <div class="task-tags"><span class="tag tag-ml">Scikit-learn</span></div>
+          </div>
+          <div class="task-right">
+            <span class="effort-badge">2h</span>
+            <div class="priority-dot p-med"></div>
+          </div>
+        </div>
+        <div class="task-body" id="body-task-22">
+          <div>
+            <div class="tb-section-label">Action Steps</div>
+            <ul class="tb-steps">
+              <li>Extract coefficients and convert to odds ratios.</li>
+              <li>Plot top 15 features bar chart.</li>
+              <li>Plot ROC-AUC and Precision-Recall curves.</li>
+              <li>Write clinical translation paragraph interpreting odds ratios.</li>
+            </ul>
+          </div>
+          <div>
+            <div class="tb-section-label">Expected Output</div>
+            <div class="output-note">Model explanation materials formatted for non-technical stakeholders in Report Section 4.</div>
+          </div>
+        </div>
+      </div>
+    </div><div id="phase6">
+      <div class="phase-sep"></div>
+      <div class="phase-header">
+        <div class="phase-tag">Phase 6</div>
+        <div class="phase-title">Reporting & Portfolio</div>
+        <div class="phase-duration">Days 12–14 — ~8 hrs</div>
+      </div>
+
+      <div class="task" id="task-23">
+        <div class="task-head" onclick="toggleTask('task-23')">
+          <div class="task-checkbox" onclick="event.stopPropagation();toggleDone('task-23')">
+            <div class="cb-box"><svg><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          </div>
+          <div class="task-meta">
+            <div class="task-title">Draft Executive Summary (1-page)</div>
+            <div class="task-tags"><span class="tag tag-report">Report</span></div>
+          </div>
+          <div class="task-right">
+            <span class="effort-badge">2h</span>
+            <div class="priority-dot p-crit"></div>
+          </div>
+        </div>
+        <div class="task-body" id="body-task-23">
+          <div>
+            <div class="tb-section-label">Action Steps</div>
+            <ul class="tb-steps">
+              <li>Write 3 headline findings leading with numbers.</li>
+              <li>Write 3 recommendations (action, evidence, impact).</li>
+              <li>Include 2×3 metrics table. No charts.</li>
+            </ul>
+          </div>
+          <div>
+            <div class="tb-section-label">Format Check</div>
+            <div class="output-note">Must be scannable by a CEO in under 60 seconds. High signal-to-noise ratio.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="task" id="task-24">
+        <div class="task-head" onclick="toggleTask('task-24')">
+          <div class="task-checkbox" onclick="event.stopPropagation();toggleDone('task-24')">
+            <div class="cb-box"><svg><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          </div>
+          <div class="task-meta">
+            <div class="task-title">Write Key Findings & Recommendations</div>
+            <div class="task-tags"><span class="tag tag-report">Report</span></div>
+          </div>
+          <div class="task-right">
+            <span class="effort-badge">4h</span>
+            <div class="priority-dot p-high"></div>
+          </div>
+        </div>
+        <div class="task-body" id="body-task-24">
+          <div>
+            <div class="tb-section-label">Action Steps</div>
+            <ul class="tb-steps">
+              <li>Embed Python charts with insight-first captions.</li>
+              <li>Explain implications of readmit distributions, A1C gaps, and risk tiers.</li>
+              <li>Draft implementation plan for Mandated Testing and Early Coordination.</li>
+            </ul>
+          </div>
+          <div>
+            <div class="tb-section-label">Caption Rule</div>
+            <div class="output-note"><strong>Rule:</strong> Every caption starts with the insight. Right: "Patients 60-70 show 38% above average readmission rate..."</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="task" id="task-25">
+        <div class="task-head" onclick="toggleTask('task-25')">
+          <div class="task-checkbox" onclick="event.stopPropagation();toggleDone('task-25')">
+            <div class="cb-box"><svg><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          </div>
+          <div class="task-meta">
+            <div class="task-title">Publish GitHub Repository & LinkedIn Updates</div>
+            <div class="task-tags"><span class="tag tag-report">GitHub</span></div>
+          </div>
+          <div class="task-right">
+            <span class="effort-badge">2h</span>
+            <div class="priority-dot p-high"></div>
+          </div>
+        </div>
+        <div class="task-body" id="body-task-25">
+          <div>
+            <div class="tb-section-label">Action Steps</div>
+            <ul class="tb-steps">
+              <li>Polish <code>README.md</code> with context, findings, screenshots, and setup code.</li>
+              <li>Publish interactive Tableau file to Tableau Public.</li>
+              <li>Share findings via structured LinkedIn post tagging #DataAnalytics.</li>
+            </ul>
+          </div>
+          <div>
+            <div class="tb-section-label">Expected Output</div>
+            <div class="output-note">Clean, accessible portfolio pieces demonstrating end-to-end technical execution and business communication.</div>
+          </div>
+        </div>
+      </div>
+    </div><div class="totals-strip">
+      <div>
+        <div class="total-num">25</div>
+        <div class="total-label">Core Tasks</div>
+      </div>
+      <div>
+        <div class="total-num">6</div>
+        <div class="total-label">Project Phases</div>
+      </div>
+      <div>
+        <div class="total-num">14</div>
+        <div class="total-label">Working Days</div>
+      </div>
+      <div>
+        <div class="total-num">~54</div>
+        <div class="total-label">Total Est. Hours</div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ── STATE ──
+const TOTAL = 25; // Adjusted total matching the consolidated task list
+let done = new Set(JSON.parse(localStorage.getItem('hc_done_v2') || '[]'));
+
+// ── BUILD SIDEBAR ──
+function buildSidebar() {
+  const tasks = document.querySelectorAll('.task');
+  const sb = document.getElementById('sidebar-links');
+  sb.innerHTML = '';
+  
+  let i = 1;
+  tasks.forEach(t => {
+    const id = t.id;
+    const title = t.querySelector('.task-title').textContent;
+    const a = document.createElement('div');
+    a.className = 'sidebar-link';
+    a.innerHTML = `<span class="sl-num">${i}</span><span class="sl-text">${title}</span><div class="sl-check ${done.has(id)?'done':''}"></div>`;
+    a.onclick = () => { document.getElementById(id).scrollIntoView({behavior:'smooth',block:'center'}); };
+    sb.appendChild(a);
+    i++;
+  });
+}
+
+// ── TOGGLE TASK EXPAND ──
+function toggleTask(id) {
+  const body = document.getElementById('body-' + id);
+  body.classList.toggle('open');
+}
+
+// ── TOGGLE DONE ──
+function toggleDone(id) {
+  const task = document.getElementById(id);
+  if (done.has(id)) { 
+    done.delete(id); 
+    task.classList.remove('done'); 
+  } else { 
+    done.add(id); 
+    task.classList.add('done'); 
+  }
+  localStorage.setItem('hc_done_v2', JSON.stringify([...done]));
+  updateProgress();
+  buildSidebar();
+}
+
+// ── PROGRESS ──
+function updateProgress() {
+  const n = done.size;
+  document.getElementById('done-count').textContent = n;
+  document.getElementById('pb').style.width = (n / TOTAL * 100) + '%';
+  document.getElementById('pb-pct').textContent = `${n} / ${TOTAL}`;
+}
+
+// ── SCROLL TO PHASE ──
+function scrollToPhase(id) {
+  const offset = 120; // Account for sticky headers
+  const element = document.getElementById(id);
+  const elementPosition = element.getBoundingClientRect().top;
+  const offsetPosition = elementPosition + window.pageYOffset - offset;
+  
+  window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+  
+  document.querySelectorAll('.phase-tab').forEach(t => t.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+}
+
+// ── INIT ──
+done.forEach(id => {
+  const t = document.getElementById(id);
+  if (t) t.classList.add('done');
+});
+
+updateProgress();
+buildSidebar();
+
+// ── AUTO-OPEN FIRST TASK ──
+const firstBody = document.getElementById('body-task-1');
+if (firstBody) firstBody.classList.add('open');
+</script>
+</body>
+</html>
