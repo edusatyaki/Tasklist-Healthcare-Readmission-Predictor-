@@ -1,0 +1,333 @@
+<svg viewBox="0 0 1200 900" xmlns="http://www.w3.org/2000/svg" font-family="monospace">
+  <rect width="1200" height="900" fill="#f8f7f4"/>
+
+  <!-- Title -->
+  <text x="30" y="36" font-size="18" font-weight="bold" fill="#111" font-family="Georgia,serif">HEALTHCARE READMISSION — DASHBOARD WIREFRAME</text>
+  <text x="30" y="54" font-size="11" fill="#888">Diabetic Patient 30-Day Readmission · Tableau / Power BI Layout</text>
+  <line x1="30" y1="62" x2="1170" y2="62" stroke="#ccc" stroke-width="1"/>
+
+  <!-- LEFT SIDEBAR NAV -->
+  <rect x="16" y="74" width="130" height="810" rx="4" fill="#1a1714" opacity="0.92"/>
+  <text x="81" y="100" font-size="9" fill="#c0392b" text-anchor="middle" letter-spacing="1">READMIT</text>
+  <text x="81" y="112" font-size="9" fill="#c0392b" text-anchor="middle" letter-spacing="1">ANALYTICS</text>
+  <line x1="36" y1="120" x2="126" y2="120" stroke="#333" stroke-width="1"/>
+  <!-- Nav items -->
+  <rect x="26" y="130" width="110" height="28" rx="3" fill="#c0392b"/>
+  <text x="81" y="148" font-size="10" fill="white" text-anchor="middle">▶  Overview</text>
+  <text x="81" y="182" font-size="10" fill="#666" text-anchor="middle">○  Clinical</text>
+  <text x="81" y="206" font-size="10" fill="#666" text-anchor="middle">○  Operational</text>
+  <text x="81" y="230" font-size="10" fill="#666" text-anchor="middle">○  Risk Tiers</text>
+  <text x="81" y="254" font-size="10" fill="#666" text-anchor="middle">○  Patients</text>
+  <line x1="36" y1="270" x2="126" y2="270" stroke="#333" stroke-width="1"/>
+  <!-- Filters label -->
+  <text x="81" y="288" font-size="8" fill="#555" text-anchor="middle" letter-spacing="1">FILTERS</text>
+  <rect x="26" y="296" width="110" height="20" rx="2" fill="#2a2a2a"/>
+  <text x="81" y="310" font-size="9" fill="#aaa" text-anchor="middle">Age Group ▾</text>
+  <rect x="26" y="322" width="110" height="20" rx="2" fill="#2a2a2a"/>
+  <text x="81" y="336" font-size="9" fill="#aaa" text-anchor="middle">Race ▾</text>
+  <rect x="26" y="348" width="110" height="20" rx="2" fill="#2a2a2a"/>
+  <text x="81" y="362" font-size="9" fill="#aaa" text-anchor="middle">Gender ▾</text>
+  <rect x="26" y="374" width="110" height="20" rx="2" fill="#2a2a2a"/>
+  <text x="81" y="388" font-size="9" fill="#aaa" text-anchor="middle">Specialty ▾</text>
+  <rect x="26" y="400" width="110" height="20" rx="2" fill="#2a2a2a"/>
+  <text x="81" y="414" font-size="9" fill="#aaa" text-anchor="middle">Admission Type ▾</text>
+
+  <!-- MAIN AREA -->
+  <!-- TOP HEADER BAR -->
+  <rect x="158" y="74" width="1026" height="48" rx="4" fill="#1a1714"/>
+  <text x="174" y="92" font-size="11" fill="#c0392b" letter-spacing="2">OVERVIEW — 30-DAY READMISSION ANALYSIS</text>
+  <text x="174" y="108" font-size="9" fill="#666">130 US Hospitals · 1999–2008 · 101,766 Encounters</text>
+  <text x="1040" y="98" font-size="9" fill="#555" text-anchor="middle">Last updated:</text>
+  <text x="1040" y="110" font-size="9" fill="#888" text-anchor="middle">Cleaned dataset</text>
+
+  <!-- ROW 1: 6 KPI CARDS -->
+  <text x="174" y="144" font-size="8" fill="#999" letter-spacing="2">KEY PERFORMANCE INDICATORS</text>
+
+  <!-- KPI 1 -->
+  <rect x="158" y="152" width="160" height="80" rx="4" fill="white" stroke="#e2ddd4" stroke-width="1"/>
+  <rect x="158" y="152" width="160" height="4" rx="2" fill="#c0392b"/>
+  <text x="168" y="170" font-size="8" fill="#999" letter-spacing="1">30-DAY READMIT RATE</text>
+  <text x="168" y="198" font-size="26" font-weight="bold" fill="#c0392b" font-family="Georgia,serif">11.2%</text>
+  <text x="168" y="218" font-size="8" fill="#aaa">vs 10% benchmark</text>
+  <text x="298" y="220" font-size="8" fill="#c0392b">↑ 1.2%</text>
+
+  <!-- KPI 2 -->
+  <rect x="328" y="152" width="160" height="80" rx="4" fill="white" stroke="#e2ddd4" stroke-width="1"/>
+  <rect x="328" y="152" width="160" height="4" rx="2" fill="#0e7c7b"/>
+  <text x="338" y="170" font-size="8" fill="#999" letter-spacing="1">AVG STAY (DAYS)</text>
+  <text x="338" y="198" font-size="26" font-weight="bold" fill="#0e7c7b" font-family="Georgia,serif">4.4</text>
+  <text x="338" y="218" font-size="8" fill="#aaa">Readmit avg: 4.1 days</text>
+
+  <!-- KPI 3 -->
+  <rect x="498" y="152" width="160" height="80" rx="4" fill="white" stroke="#e2ddd4" stroke-width="1"/>
+  <rect x="498" y="152" width="160" height="4" rx="2" fill="#d4820a"/>
+  <text x="508" y="170" font-size="8" fill="#999" letter-spacing="1">A1C TEST RATE</text>
+  <text x="508" y="198" font-size="26" font-weight="bold" fill="#d4820a" font-family="Georgia,serif">17%</text>
+  <text x="508" y="218" font-size="8" fill="#aaa">83% untested — critical gap</text>
+
+  <!-- KPI 4 -->
+  <rect x="668" y="152" width="160" height="80" rx="4" fill="white" stroke="#e2ddd4" stroke-width="1"/>
+  <rect x="668" y="152" width="160" height="4" rx="2" fill="#1a5276"/>
+  <text x="678" y="170" font-size="8" fill="#999" letter-spacing="1">AVG MEDICATIONS</text>
+  <text x="678" y="198" font-size="26" font-weight="bold" fill="#1a5276" font-family="Georgia,serif">16.1</text>
+  <text x="678" y="218" font-size="8" fill="#aaa">per encounter</text>
+
+  <!-- KPI 5 -->
+  <rect x="838" y="152" width="160" height="80" rx="4" fill="white" stroke="#e2ddd4" stroke-width="1"/>
+  <rect x="838" y="152" width="160" height="4" rx="2" fill="#1e6b45"/>
+  <text x="848" y="170" font-size="8" fill="#999" letter-spacing="1">UNIQUE PATIENTS</text>
+  <text x="848" y="198" font-size="26" font-weight="bold" fill="#1e6b45" font-family="Georgia,serif">71K</text>
+  <text x="848" y="218" font-size="8" fill="#aaa">after deduplication</text>
+
+  <!-- KPI 6 -->
+  <rect x="1008" y="152" width="176" height="80" rx="4" fill="white" stroke="#e2ddd4" stroke-width="1"/>
+  <rect x="1008" y="152" width="176" height="4" rx="2" fill="#c0392b"/>
+  <text x="1018" y="170" font-size="8" fill="#999" letter-spacing="1">HIGH-RISK PATIENTS</text>
+  <text x="1018" y="198" font-size="26" font-weight="bold" fill="#c0392b" font-family="Georgia,serif">8,543</text>
+  <text x="1018" y="218" font-size="8" fill="#aaa">need care coordinator</text>
+
+  <!-- ROW 2: DONUT + BAR CHART -->
+  <text x="174" y="252" font-size="8" fill="#999" letter-spacing="2">PAGE 1 — OVERVIEW CHARTS</text>
+
+  <!-- CHART 1: Donut -->
+  <rect x="158" y="260" width="300" height="240" rx="4" fill="white" stroke="#e2ddd4" stroke-width="1"/>
+  <text x="174" y="278" font-size="10" font-weight="bold" fill="#111" font-family="Georgia,serif">Readmission Distribution</text>
+  <text x="174" y="290" font-size="8" fill="#aaa">3-class breakdown of all encounters</text>
+  <!-- Donut mock -->
+  <circle cx="258" cy="370" r="70" fill="none" stroke="#e2ddd4" stroke-width="1"/>
+  <circle cx="258" cy="370" r="70" fill="none" stroke="#c0392b" stroke-width="28" stroke-dasharray="44 396" stroke-dashoffset="0" transform="rotate(-90 258 370)"/>
+  <circle cx="258" cy="370" r="70" fill="none" stroke="#d4820a" stroke-width="28" stroke-dasharray="138 302" stroke-dashoffset="-44" transform="rotate(-90 258 370)"/>
+  <circle cx="258" cy="370" r="70" fill="none" stroke="#1e6b45" stroke-width="28" stroke-dasharray="214 226" stroke-dashoffset="-182" transform="rotate(-90 258 370)"/>
+  <circle cx="258" cy="370" r="42" fill="white"/>
+  <text x="258" y="365" font-size="9" text-anchor="middle" fill="#111" font-weight="bold">101K</text>
+  <text x="258" y="378" font-size="8" text-anchor="middle" fill="#888">encounters</text>
+  <!-- Legend -->
+  <rect x="174" y="460" width="10" height="10" fill="#c0392b"/>
+  <text x="190" y="469" font-size="8" fill="#555">&#60;30 days (11.2%)</text>
+  <rect x="174" y="476" width="10" height="10" fill="#d4820a"/>
+  <text x="190" y="485" font-size="8" fill="#555">&gt;30 days (34.5%)</text>
+  <rect x="174" y="492" width="10" height="10" fill="#1e6b45"/>
+  <text x="190" y="501" font-size="8" fill="#555">No readmit (54.3%)</text>
+
+  <!-- CHART 2: Age Bar -->
+  <rect x="470" y="260" width="380" height="240" rx="4" fill="white" stroke="#e2ddd4" stroke-width="1"/>
+  <text x="486" y="278" font-size="10" font-weight="bold" fill="#111" font-family="Georgia,serif">Readmission Rate by Age Group</text>
+  <text x="486" y="290" font-size="8" fill="#aaa">% readmitted &#60;30 days per cohort</text>
+  <!-- Bars -->
+  <line x1="510" y1="460" x2="830" y2="460" stroke="#ddd" stroke-width="1"/>
+  <line x1="510" y1="430" x2="830" y2="430" stroke="#f0f0f0" stroke-width="1"/>
+  <line x1="510" y1="400" x2="830" y2="400" stroke="#f0f0f0" stroke-width="1"/>
+  <line x1="510" y1="370" x2="830" y2="370" stroke="#f0f0f0" stroke-width="1"/>
+  <line x1="510" y1="340" x2="830" y2="340" stroke="#f0f0f0" stroke-width="1"/>
+  <text x="505" y="463" font-size="7" fill="#aaa" text-anchor="end">0%</text>
+  <text x="505" y="433" font-size="7" fill="#aaa" text-anchor="end">5%</text>
+  <text x="505" y="403" font-size="7" fill="#aaa" text-anchor="end">10%</text>
+  <text x="505" y="373" font-size="7" fill="#aaa" text-anchor="end">15%</text>
+  <text x="505" y="343" font-size="7" fill="#aaa" text-anchor="end">20%</text>
+  <!-- bars per age group -->
+  <rect x="516" y="452" width="22" height="8" fill="#0e7c7b" opacity="0.7"/>
+  <rect x="544" y="448" width="22" height="12" fill="#0e7c7b" opacity="0.7"/>
+  <rect x="572" y="444" width="22" height="16" fill="#0e7c7b" opacity="0.7"/>
+  <rect x="600" y="438" width="22" height="22" fill="#d4820a" opacity="0.8"/>
+  <rect x="628" y="420" width="22" height="40" fill="#c0392b"/>
+  <rect x="656" y="413" width="22" height="47" fill="#c0392b"/>
+  <rect x="684" y="422" width="22" height="38" fill="#c0392b"/>
+  <rect x="712" y="436" width="22" height="24" fill="#d4820a" opacity="0.8"/>
+  <rect x="740" y="445" width="22" height="15" fill="#0e7c7b" opacity="0.7"/>
+  <!-- benchmark line -->
+  <line x1="510" y1="404" x2="830" y2="404" stroke="#c0392b" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="833" y="407" font-size="7" fill="#c0392b">avg</text>
+  <!-- x labels -->
+  <text x="527" y="472" font-size="7" fill="#888" text-anchor="middle">0-10</text>
+  <text x="555" y="472" font-size="7" fill="#888" text-anchor="middle">10-20</text>
+  <text x="583" y="472" font-size="7" fill="#888" text-anchor="middle">20-30</text>
+  <text x="611" y="472" font-size="7" fill="#888" text-anchor="middle">30-40</text>
+  <text x="639" y="472" font-size="7" fill="#888" text-anchor="middle">40-50</text>
+  <text x="667" y="472" font-size="7" fill="#888" text-anchor="middle">50-60</text>
+  <text x="695" y="472" font-size="7" fill="#888" text-anchor="middle">60-70</text>
+  <text x="723" y="472" font-size="7" fill="#888" text-anchor="middle">70-80</text>
+  <text x="751" y="472" font-size="7" fill="#888" text-anchor="middle">80-90</text>
+  <text x="480" y="472" font-size="7" fill="#888" text-anchor="middle">Age →</text>
+
+  <!-- CHART 3: Prior visits heatmap -->
+  <rect x="862" y="260" width="322" height="240" rx="4" fill="white" stroke="#e2ddd4" stroke-width="1"/>
+  <text x="878" y="278" font-size="10" font-weight="bold" fill="#111" font-family="Georgia,serif">Prior Visits Risk Heatmap</text>
+  <text x="878" y="290" font-size="8" fill="#aaa">Inpatient × Emergency visits → readmit rate</text>
+  <!-- heatmap grid labels -->
+  <text x="878" y="316" font-size="7" fill="#888">Inpatient →</text>
+  <text x="930" y="316" font-size="7" fill="#555" text-anchor="middle">0</text>
+  <text x="970" y="316" font-size="7" fill="#555" text-anchor="middle">1</text>
+  <text x="1010" y="316" font-size="7" fill="#555" text-anchor="middle">2</text>
+  <text x="1050" y="316" font-size="7" fill="#555" text-anchor="middle">3+</text>
+  <text x="905" y="345" font-size="7" fill="#555" text-anchor="end">ER:0</text>
+  <text x="905" y="385" font-size="7" fill="#555" text-anchor="end">ER:1</text>
+  <text x="905" y="425" font-size="7" fill="#555" text-anchor="end">ER:2</text>
+  <text x="905" y="465" font-size="7" fill="#555" text-anchor="end">ER:3+</text>
+  <!-- heatmap cells -->
+  <rect x="910" y="325" width="38" height="38" rx="2" fill="#fde8e8" opacity="0.6"/><text x="929" y="349" font-size="9" text-anchor="middle" fill="#c0392b">8%</text>
+  <rect x="950" y="325" width="38" height="38" rx="2" fill="#f5b0b0" opacity="0.8"/><text x="969" y="349" font-size="9" text-anchor="middle" fill="#c0392b">12%</text>
+  <rect x="990" y="325" width="38" height="38" rx="2" fill="#e88080"/><text x="1009" y="349" font-size="9" text-anchor="middle" fill="white">17%</text>
+  <rect x="1030" y="325" width="38" height="38" rx="2" fill="#c0392b"/><text x="1049" y="349" font-size="9" text-anchor="middle" fill="white">24%</text>
+
+  <rect x="910" y="365" width="38" height="38" rx="2" fill="#f5b0b0" opacity="0.7"/><text x="929" y="389" font-size="9" text-anchor="middle" fill="#c0392b">11%</text>
+  <rect x="950" y="365" width="38" height="38" rx="2" fill="#e88080"/><text x="969" y="389" font-size="9" text-anchor="middle" fill="white">16%</text>
+  <rect x="990" y="365" width="38" height="38" rx="2" fill="#c0392b" opacity="0.8"/><text x="1009" y="389" font-size="9" text-anchor="middle" fill="white">21%</text>
+  <rect x="1030" y="365" width="38" height="38" rx="2" fill="#8b0000"/><text x="1049" y="389" font-size="9" text-anchor="middle" fill="white">31%</text>
+
+  <rect x="910" y="405" width="38" height="38" rx="2" fill="#e88080" opacity="0.7"/><text x="929" y="429" font-size="9" text-anchor="middle" fill="white">14%</text>
+  <rect x="950" y="405" width="38" height="38" rx="2" fill="#c0392b" opacity="0.7"/><text x="969" y="429" font-size="9" text-anchor="middle" fill="white">19%</text>
+  <rect x="990" y="405" width="38" height="38" rx="2" fill="#8b0000" opacity="0.8"/><text x="1009" y="429" font-size="9" text-anchor="middle" fill="white">27%</text>
+  <rect x="1030" y="405" width="38" height="38" rx="2" fill="#5c0000"/><text x="1049" y="429" font-size="9" text-anchor="middle" fill="white">38%</text>
+
+  <rect x="910" y="445" width="38" height="38" rx="2" fill="#c0392b" opacity="0.6"/><text x="929" y="469" font-size="9" text-anchor="middle" fill="white">18%</text>
+  <rect x="950" y="445" width="38" height="38" rx="2" fill="#8b0000" opacity="0.7"/><text x="969" y="469" font-size="9" text-anchor="middle" fill="white">25%</text>
+  <rect x="990" y="445" width="38" height="38" rx="2" fill="#8b0000"/><text x="1009" y="469" font-size="9" text-anchor="middle" fill="white">33%</text>
+  <rect x="1030" y="445" width="38" height="38" rx="2" fill="#3c0000"/><text x="1049" y="469" font-size="9" text-anchor="middle" fill="white">44%</text>
+
+  <!-- ROW 3: Two more charts -->
+  <text x="174" y="522" font-size="8" fill="#999" letter-spacing="2">PAGE 2 — CLINICAL FACTORS</text>
+
+  <!-- Chart 4: Boxplot -->
+  <rect x="158" y="530" width="340" height="200" rx="4" fill="white" stroke="#e2ddd4" stroke-width="1"/>
+  <text x="174" y="548" font-size="10" font-weight="bold" fill="#111" font-family="Georgia,serif">Time in Hospital vs Readmission</text>
+  <text x="174" y="560" font-size="8" fill="#aaa">Boxplot — days in hospital by readmit class</text>
+  <!-- Box 1: No readmit -->
+  <line x1="230" y1="590" x2="230" y2="700" stroke="#1e6b45" stroke-width="1"/>
+  <rect x="210" y="620" width="40" height="50" rx="2" fill="none" stroke="#1e6b45" stroke-width="2"/>
+  <line x1="210" y1="642" x2="250" y2="642" stroke="#1e6b45" stroke-width="2"/>
+  <text x="230" y="715" font-size="8" fill="#555" text-anchor="middle">No Readmit</text>
+  <!-- Box 2: >30 -->
+  <line x1="330" y1="585" x2="330" y2="705" stroke="#d4820a" stroke-width="1"/>
+  <rect x="308" y="618" width="44" height="55" rx="2" fill="none" stroke="#d4820a" stroke-width="2"/>
+  <line x1="308" y1="643" x2="352" y2="643" stroke="#d4820a" stroke-width="2"/>
+  <text x="330" y="715" font-size="8" fill="#555" text-anchor="middle">&gt;30 Days</text>
+  <!-- Box 3: <30 -->
+  <line x1="430" y1="582" x2="430" y2="700" stroke="#c0392b" stroke-width="1"/>
+  <rect x="408" y="614" width="44" height="60" rx="2" fill="none" stroke="#c0392b" stroke-width="2"/>
+  <line x1="408" y1="636" x2="452" y2="636" stroke="#c0392b" stroke-width="2"/>
+  <!-- outlier dots -->
+  <circle cx="430" cy="578" r="2" fill="#c0392b" opacity="0.5"/>
+  <circle cx="427" cy="572" r="2" fill="#c0392b" opacity="0.4"/>
+  <text x="430" y="715" font-size="8" fill="#555" text-anchor="middle">&#60;30 Days</text>
+  <text x="174" y="725" font-size="8" fill="#aaa">Short stays (1-3 days) show high &#60;30 readmission signal</text>
+
+  <!-- Chart 5: A1C Stacked Bar -->
+  <rect x="510" y="530" width="360" height="200" rx="4" fill="white" stroke="#e2ddd4" stroke-width="1"/>
+  <text x="526" y="548" font-size="10" font-weight="bold" fill="#111" font-family="Georgia,serif">A1C Result vs Readmission Rate</text>
+  <text x="526" y="560" font-size="8" fill="#aaa">Impact of glucose monitoring on 30-day return</text>
+  <!-- bars -->
+  <rect x="540" y="640" width="52" height="60" rx="2" fill="#1e6b45" opacity="0.7"/>
+  <rect x="540" y="610" width="52" height="30" rx="2" fill="#d4820a" opacity="0.7"/>
+  <rect x="540" y="592" width="52" height="18" rx="2" fill="#c0392b"/>
+  <text x="566" y="715" font-size="8" fill="#555" text-anchor="middle">None</text>
+
+  <rect x="614" y="645" width="52" height="55" rx="2" fill="#1e6b45" opacity="0.7"/>
+  <rect x="614" y="618" width="52" height="27" rx="2" fill="#d4820a" opacity="0.7"/>
+  <rect x="614" y="604" width="52" height="14" rx="2" fill="#c0392b"/>
+  <text x="640" y="715" font-size="8" fill="#555" text-anchor="middle">Normal</text>
+
+  <rect x="688" y="642" width="52" height="58" rx="2" fill="#1e6b45" opacity="0.7"/>
+  <rect x="688" y="612" width="52" height="30" rx="2" fill="#d4820a" opacity="0.7"/>
+  <rect x="688" y="594" width="52" height="18" rx="2" fill="#c0392b"/>
+  <text x="714" y="715" font-size="8" fill="#555" text-anchor="middle">&gt;7</text>
+
+  <rect x="762" y="635" width="52" height="65" rx="2" fill="#1e6b45" opacity="0.7"/>
+  <rect x="762" y="600" width="52" height="35" rx="2" fill="#d4820a" opacity="0.7"/>
+  <rect x="762" y="578" width="52" height="22" rx="2" fill="#c0392b"/>
+  <text x="788" y="715" font-size="8" fill="#555" text-anchor="middle">&gt;8 (Poor)</text>
+
+  <text x="526" y="725" font-size="8" fill="#aaa">Poor glycemic control (&#62;8) shows highest readmission burden</text>
+
+  <!-- Chart 6: Specialty Horizontal Bar -->
+  <rect x="882" y="530" width="302" height="200" rx="4" fill="white" stroke="#e2ddd4" stroke-width="1"/>
+  <text x="898" y="548" font-size="10" font-weight="bold" fill="#111" font-family="Georgia,serif">Top Specialties — Readmit Rate</text>
+  <text x="898" y="560" font-size="8" fill="#aaa">Horizontal bar — sorted by &#60;30 rate</text>
+  <!-- h-bars -->
+  <text x="990" y="578" font-size="7" fill="#888" text-anchor="end">Internal Medicine</text>
+  <rect x="994" y="568" width="140" height="12" rx="2" fill="#c0392b" opacity="0.8"/>
+  <text x="1136" y="578" font-size="7" fill="#c0392b">18.2%</text>
+
+  <text x="990" y="596" font-size="7" fill="#888" text-anchor="end">Cardiology</text>
+  <rect x="994" y="586" width="112" height="12" rx="2" fill="#c0392b" opacity="0.6"/>
+  <text x="1108" y="596" font-size="7" fill="#888">14.7%</text>
+
+  <text x="990" y="614" font-size="7" fill="#888" text-anchor="end">Surgery</text>
+  <rect x="994" y="604" width="96" height="12" rx="2" fill="#d4820a" opacity="0.7"/>
+  <text x="1092" y="614" font-size="7" fill="#888">12.6%</text>
+
+  <text x="990" y="632" font-size="7" fill="#888" text-anchor="end">Emergency</text>
+  <rect x="994" y="622" width="84" height="12" rx="2" fill="#d4820a" opacity="0.6"/>
+  <text x="1080" y="632" font-size="7" fill="#888">11.1%</text>
+
+  <text x="990" y="650" font-size="7" fill="#888" text-anchor="end">Nephrology</text>
+  <rect x="994" y="640" width="76" height="12" rx="2" fill="#0e7c7b" opacity="0.6"/>
+  <text x="1072" y="650" font-size="7" fill="#888">10.0%</text>
+
+  <text x="990" y="668" font-size="7" fill="#888" text-anchor="end">Pulmonary</text>
+  <rect x="994" y="658" width="64" height="12" rx="2" fill="#0e7c7b" opacity="0.5"/>
+
+  <text x="990" y="686" font-size="7" fill="#888" text-anchor="end">Oncology</text>
+  <rect x="994" y="676" width="55" height="12" rx="2" fill="#0e7c7b" opacity="0.4"/>
+
+  <text x="990" y="704" font-size="7" fill="#888" text-anchor="end">Orthopaedics</text>
+  <rect x="994" y="694" width="40" height="12" rx="2" fill="#1e6b45" opacity="0.4"/>
+  <!-- avg line -->
+  <line x1="1108" y1="568" x2="1108" y2="710" stroke="#c0392b" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="1110" y="718" font-size="6" fill="#c0392b">avg 11.2%</text>
+
+  <!-- BOTTOM FOOTER BAR -->
+  <rect x="158" y="748" width="1026" height="136" rx="4" fill="white" stroke="#e2ddd4" stroke-width="1"/>
+  <text x="174" y="766" font-size="8" fill="#999" letter-spacing="2">PAGE 4 — RISK SEGMENTATION TABLE (INTERACTIVE)</text>
+  <!-- table header -->
+  <rect x="168" y="772" width="1006" height="20" rx="2" fill="#1a1714"/>
+  <text x="200" y="785" font-size="8" fill="white">Patient ID</text>
+  <text x="300" y="785" font-size="8" fill="white">Age</text>
+  <text x="370" y="785" font-size="8" fill="white">Diagnosis Group</text>
+  <text x="530" y="785" font-size="8" fill="white">Specialty</text>
+  <text x="680" y="785" font-size="8" fill="white">Prior Visits</text>
+  <text x="780" y="785" font-size="8" fill="white">Days in Hospital</text>
+  <text x="900" y="785" font-size="8" fill="white">Risk Tier</text>
+  <text x="1010" y="785" font-size="8" fill="white">Action</text>
+  <!-- row 1 -->
+  <rect x="168" y="792" width="1006" height="22" fill="#fff5f5"/>
+  <text x="200" y="807" font-size="8" fill="#555">PT-82443</text>
+  <text x="300" y="807" font-size="8" fill="#555">74</text>
+  <text x="370" y="807" font-size="8" fill="#555">Circulatory</text>
+  <text x="530" y="807" font-size="8" fill="#555">Internal Med</text>
+  <text x="680" y="807" font-size="8" fill="#555">5</text>
+  <text x="780" y="807" font-size="8" fill="#555">2 days</text>
+  <rect x="893" y="796" width="50" height="14" rx="7" fill="#c0392b"/>
+  <text x="918" y="806" font-size="7" fill="white" text-anchor="middle">HIGH</text>
+  <text x="1010" y="807" font-size="8" fill="#c0392b">Assign coordinator</text>
+  <!-- row 2 -->
+  <rect x="168" y="814" width="1006" height="22" fill="#fdf8f0"/>
+  <text x="200" y="829" font-size="8" fill="#555">PT-55629</text>
+  <text x="300" y="829" font-size="8" fill="#555">61</text>
+  <text x="370" y="829" font-size="8" fill="#555">Diabetes</text>
+  <text x="530" y="829" font-size="8" fill="#555">Cardiology</text>
+  <text x="680" y="829" font-size="8" fill="#555">2</text>
+  <text x="780" y="829" font-size="8" fill="#555">4 days</text>
+  <rect x="893" y="818" width="55" height="14" rx="7" fill="#d4820a"/>
+  <text x="920" y="828" font-size="7" fill="white" text-anchor="middle">MEDIUM</text>
+  <text x="1010" y="829" font-size="8" fill="#d4820a">7-day follow up</text>
+  <!-- row 3 -->
+  <rect x="168" y="836" width="1006" height="22" fill="#f5faf7"/>
+  <text x="200" y="851" font-size="8" fill="#555">PT-22781</text>
+  <text x="300" y="851" font-size="8" fill="#555">45</text>
+  <text x="370" y="851" font-size="8" fill="#555">Other</text>
+  <text x="530" y="851" font-size="8" fill="#555">Pediatrics</text>
+  <text x="680" y="851" font-size="8" fill="#555">0</text>
+  <text x="780" y="851" font-size="8" fill="#555">3 days</text>
+  <rect x="893" y="840" width="40" height="14" rx="7" fill="#1e6b45"/>
+  <text x="913" y="850" font-size="7" fill="white" text-anchor="middle">LOW</text>
+  <text x="1010" y="851" font-size="8" fill="#1e6b45">Standard discharge</text>
+  <!-- footer note -->
+  <text x="174" y="878" font-size="8" fill="#aaa">↑ Interactive: filter by Risk Tier, Age, Specialty. Drill-through to full patient detail. Export to CSV for care coordinators.</text>
+
+  <!-- Overall border -->
+  <rect x="8" y="66" width="1184" height="826" rx="6" fill="none" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="8 4" opacity="0.3"/>
+
+  <!-- Annotations -->
+  <text x="40" y="888" font-size="9" fill="#aaa">Wireframe: Diabetic Patient Readmission Dashboard · Tableau / Power BI · 4 Pages · 6 KPIs · 9 Charts</text>
+  <text x="1170" y="888" font-size="9" fill="#aaa" text-anchor="end">Senior Data Analyst Portfolio Project · 2026</text>
+</svg>
